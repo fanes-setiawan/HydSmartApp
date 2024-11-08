@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1025008658003",
+    "project_id": "hydsmartfire",
+    "storage_bucket": "hydsmartfire.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1025008658003:android:2e3f9995212b9c5c31c8a6",
+        "android_client_info": {
+          "package_name": "com.hydsmartapp.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCBD0g2s5pAVGQ-Fue464ZgyHZRDtdioj4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

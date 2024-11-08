@@ -1,4 +1,4 @@
-package com.example.hyd_smart_app
+package com.hydsmartapp.app
 
 import io.flutter.embedding.android.FlutterActivity
 
