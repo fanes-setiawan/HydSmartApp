@@ -9,6 +9,8 @@ import 'package:hyd_smart_app/presentations/navbar.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );

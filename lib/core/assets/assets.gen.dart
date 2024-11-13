@@ -1,7 +1,3 @@
-import 'package:flutter/widgets.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_svg/flutter_svg.dart' as _svg;
-import 'package:vector_graphics/vector_graphics.dart' as _vg;
 /// GENERATED CODE - DO NOT MODIFY BY HAND
 /// *****************************************************
 ///  FlutterGen
@@ -11,6 +7,10 @@ import 'package:vector_graphics/vector_graphics.dart' as _vg;
 // ignore_for_file: type=lint
 // ignore_for_file: directives_ordering,unnecessary_import,implicit_dynamic_list_literal,deprecated_member_use
 
+import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_svg/flutter_svg.dart' as _svg;
+import 'package:vector_graphics/vector_graphics.dart' as _vg;
 
 class $AssetsIconsGen {
   const $AssetsIconsGen();
@@ -71,6 +71,10 @@ class $AssetsIconsGen {
   SvgGenImage get fountain14SvgrepoCom =>
       const SvgGenImage('assets/icons/fountain-14-svgrepo-com.svg');
 
+  /// File path: assets/icons/google-calendar-svgrepo-com.svg
+  SvgGenImage get googleCalendarSvgrepoCom =>
+      const SvgGenImage('assets/icons/google-calendar-svgrepo-com.svg');
+
   /// File path: assets/icons/grid.svg
   SvgGenImage get grid => const SvgGenImage('assets/icons/grid.svg');
 
@@ -116,6 +120,10 @@ class $AssetsIconsGen {
   SvgGenImage get trendingDownSquare =>
       const SvgGenImage('assets/icons/trending-down-square.svg');
 
+  /// File path: assets/icons/work-schedule-icon.svg
+  SvgGenImage get workScheduleIcon =>
+      const SvgGenImage('assets/icons/work-schedule-icon.svg');
+
   /// File path: assets/icons/x-circle.svg
   SvgGenImage get xCircle => const SvgGenImage('assets/icons/x-circle.svg');
 
@@ -140,6 +148,7 @@ class $AssetsIconsGen {
         fanSvgrepoCom,
         fileText,
         fountain14SvgrepoCom,
+        googleCalendarSvgrepoCom,
         grid,
         home,
         info,
@@ -153,6 +162,7 @@ class $AssetsIconsGen {
         toggleLeft,
         toggleRight,
         trendingDownSquare,
+        workScheduleIcon,
         xCircle,
         xOctagon
       ];

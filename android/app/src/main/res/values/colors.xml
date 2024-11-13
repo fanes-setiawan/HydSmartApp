@@ -11,4 +11,5 @@
     <color name="orangedark">#BB6008</color>
     <color name="black">#000000</color>
     <color name="durastha">#0B77B5</color>
+	<color name="ic_launcher_background">#ffffffff</color>
 </resources>
