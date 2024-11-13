@@ -22,7 +22,7 @@ class CardWidget extends StatelessWidget {
           colorFilter:
               const ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
         ),
-        title: const  Text("Remote"),
+        title: const  Text("Control"),
         subtitle: const  Text("lakukan perintah sesuai kebutuhan..."),
       ),
     );

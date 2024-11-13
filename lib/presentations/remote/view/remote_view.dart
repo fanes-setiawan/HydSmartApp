@@ -38,16 +38,14 @@ class _RemoteViewState extends State<RemoteView> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.stroke,
-      appBar: AppBar(
-        title: const Text(""),
-        actions: const [],
-        backgroundColor: AppColors.stroke,
-      ),
       body: SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.all(18.0),
           child: Column(
             children: [
+              const SizedBox(
+                height: 55.0,
+              ),
               const CardWidget(),
               const SizedBox(
                 height: 10.0,
@@ -79,7 +77,7 @@ class _RemoteViewState extends State<RemoteView> {
                         width: 24,
                         height: 24,
                         colorFilter: const ColorFilter.mode(
-                            AppColors.primary, BlendMode.srcIn),
+                            AppColors.blue, BlendMode.srcIn),
                       ),
                       title: "Water Pump",
                       value: _waterPump,
@@ -106,47 +104,50 @@ class _RemoteViewState extends State<RemoteView> {
               ),
               const SizedBox(height: 15.0),
               Container(
-                  width: MediaQuery.of(context).size.width,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(18.0),
-                      color: AppColors.white),
-                  child: Column(children: [
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(18.0),
+                    color: AppColors.white),
+                child: Column(
+                  children: [
                     TextInputRow(
                       title: 'pH Down',
                       subtitle: 'tambahkan larutan pH Down',
                       onChanged: (value) {
                         _controller.updateFirestoreField(
-                            'phDown', int.tryParse(value) ?? 0);
+                            'phDown', double.tryParse(value) ?? 0.0);
                       },
                     ),
-                     const Divider(height: 0.1, thickness: 0.5),
+                    const Divider(height: 0.1, thickness: 0.5),
                     TextInputRow(
                       title: 'pH Up',
                       subtitle: 'tambahkan larutan pH Up',
                       onChanged: (value) {
                         _controller.updateFirestoreField(
-                            'phUp', int.tryParse(value) ?? 0);
+                            'phUp', double.tryParse(value) ?? 0.0);
                       },
                     ),
-                     const Divider(height: 0.1, thickness: 0.5),
+                    const Divider(height: 0.1, thickness: 0.5),
                     TextInputRow(
                       title: 'Nutrisi',
                       subtitle: 'tambahkan larutan Nutrisi',
                       onChanged: (value) {
                         _controller.updateFirestoreField(
-                            'nutrisi', int.tryParse(value) ?? 0);
+                            'nutrisi', double.tryParse(value) ?? 0.0);
                       },
                     ),
-                     const Divider(height: 0.1, thickness: 0.5),
+                    const Divider(height: 0.1, thickness: 0.5),
                     TextInputRow(
                       title: 'Water',
                       subtitle: 'tambahkan air',
                       onChanged: (value) {
                         _controller.updateFirestoreField(
-                            'water', int.tryParse(value) ?? 0);
+                            'water', double.tryParse(value) ?? 0);
                       },
                     ),
-                  ])),
+                  ],
+                ),
+              ),
             ],
           ),
         ),

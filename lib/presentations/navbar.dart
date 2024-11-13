@@ -51,7 +51,7 @@ class _NavBarState extends State<NavBar> {
                     _selectedIndex == 1 ? AppColors.primary : AppColors.gray,
                     BlendMode.srcIn),
               ),
-              label: 'Remote'),
+              label: 'Control'),
          
         ],
       ),
