@@ -15,7 +15,14 @@ class _NotifViewState extends State<NotifView> {
       backgroundColor: AppColors.defauld,
       appBar: AppBar(
         backgroundColor: AppColors.defauld,
-        title: const Text("Notifikasi"),
+         title: const Text(
+          'Notifikasi',
+          style: TextStyle(
+            color: AppColors.gray,
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
         actions: const [],
       ),
       body: SingleChildScrollView(

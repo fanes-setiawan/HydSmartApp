@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:hyd_smart_app/core/constans/colors.dart';
 import 'package:hyd_smart_app/core/assets/assets.gen.dart';
 import 'package:hyd_smart_app/core/components/logging.dart';
-import 'package:hyd_smart_app/presentations/notif/view/notif_view.dart';
+import 'package:hyd_smart_app/presentations/home/view/notif_view.dart';
+import 'package:hyd_smart_app/presentations/home/view/schedule_view.dart';
 import 'package:hyd_smart_app/presentations/home/controller/home_controller.dart';
 // ignore_for_file: deprecated_member_use_from_same_package
 
@@ -32,20 +33,32 @@ class _HomeViewState extends State<HomeView> {
       appBar: AppBar(
         backgroundColor: AppColors.defauld,
         actions: [
-          IconButton(
-            onPressed: () {
+          GestureDetector(
+            onTap: () {
               Get.to(const NotifView());
             },
-            icon: Assets.icons.bell.svg(
-              width: 25,
-              colorFilter: const ColorFilter.mode(
-                AppColors.gray,
-                BlendMode.srcIn,
+            child: Badge(
+              label: const Text(
+                "4",
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+              child: Assets.icons.bell.svg(
+                width: 25,
+                colorFilter: const ColorFilter.mode(
+                  AppColors.gray,
+                  BlendMode.srcIn,
+                ),
               ),
             ),
           ),
+          const SizedBox(
+          width: 10.0,
+          ),
           IconButton(
             onPressed: () {
+              Get.to(ScheduleView());
             },
             icon: Assets.icons.workScheduleIcon.svg(
               width: 25,
@@ -175,7 +188,7 @@ class _HomeViewState extends State<HomeView> {
                 ),
               ),
               const SizedBox(
-              height: 20.0,
+                height: 20.0,
               ),
               Container(
                 padding: const EdgeInsets.all(10.0),

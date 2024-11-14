@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hyd_smart_app/core/constans/colors.dart';
 import 'package:hyd_smart_app/core/assets/assets.gen.dart';
+import 'package:hyd_smart_app/core/components/logging.dart';
 import 'package:hyd_smart_app/common/message/showTopSnackBar.dart';
 
 class TextInputRow extends StatefulWidget {
@@ -10,14 +11,15 @@ class TextInputRow extends StatefulWidget {
   final Widget? leading;
 
   const TextInputRow({
-    Key? key,
+    super.key,
     required this.title,
     this.subtitle,
     required this.onChanged,
     this.leading,
-  }) : super(key: key);
+  });
 
   @override
+  // ignore: library_private_types_in_public_api
   _TextInputRowState createState() => _TextInputRowState();
 }
 
@@ -88,7 +90,7 @@ class _TextInputRowState extends State<TextInputRow> {
                       try {
                         widget.onChanged(value);
                         _controller.text = '';
-                        print("Firebase updated with value: $value");
+                        dlg("Firebase updated with value: $value");
                         showTopSnackBar(
                           context: context,
                           title: 'Hydroponik Smart',
@@ -96,7 +98,7 @@ class _TextInputRowState extends State<TextInputRow> {
                               '${widget.title} $value ml berhasil ditambahkan',
                         );
                       } catch (e) {
-                        print("Failed to update Firebase: $e");
+                        dlg("Failed to update Firebase: $e");
                       }
                     }
                     Navigator.pop(context);
