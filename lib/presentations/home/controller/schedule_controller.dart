@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hyd_smart_app/core/components/logging.dart';
 import 'package:hyd_smart_app/core/format/format_time.dart';
 import 'package:hyd_smart_app/core/model/combineDateAndTime.dart';
+import 'package:hyd_smart_app/common/message/showTopSnackBar.dart';
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
 class ScheduleController {
@@ -16,9 +17,34 @@ class ScheduleController {
   DateTime? selectedDay;
   TimeOfDay? selectedTime;
 
+  //settings
   bool automatic = false;
   bool waterPump = false;
   bool mixer = false;
+
+  final TextEditingController controllerPhUp = TextEditingController();
+  final TextEditingController controllerPhDown = TextEditingController();
+  final TextEditingController controllerNutrisi = TextEditingController();
+  final TextEditingController controllerWater = TextEditingController();
+
+  // Tambahkan metode untuk mengubah nilai
+  void setAutomatic(bool value) {
+    setState(() {
+      automatic = value;
+    });
+  }
+
+  void setWaterPump(bool value) {
+    setState(() {
+      waterPump = value;
+    });
+  }
+
+  void setMixer(bool value) {
+    setState(() {
+      mixer = value;
+    });
+  }
 
   Future<void> selectTime() async {
     final TimeOfDay? pickedTime = await showTimePicker(
@@ -33,43 +59,56 @@ class ScheduleController {
         selectedTime = pickedTime;
       });
     }
-    dlg("HASIL TIME PICKER ${pickedTime.toString()}");
-    dlg("HASIL TIME PICKER DAY${selectedDay.toString()}");
-    if (selectedDay != null && selectedTime != null) {
-      // Gabungkan tanggal dan waktu
-      DateTime combinedDateTime =
-          combineDateAndTime(selectedDay!, selectedTime!);
+  }
 
-      // Format tanggal untuk tampilanß
-      String formattedDate = FormatTime.formatDateTime(combinedDateTime);
-      dlg("Formatted Date: $formattedDate");
+  Future<void> addSchedule() async {
+    try {
+      // Validasi bahwa tanggal dan waktu telah dipilih
+      if (selectedDay != null && selectedTime != null) {
+        // Gabungkan tanggal dan waktu
+        DateTime combinedDateTime =
+            combineDateAndTime(selectedDay!, selectedTime!);
+        Timestamp firestoreTimestamp =
+            FormatTime.toFirestoreTimestamp(dateTime: combinedDateTime);
 
-      // Konversi ke Firestore Timestamp
-      Timestamp firestoreTimestamp = FormatTime.toFirestoreTimestamp(dateTime:  combinedDateTime);
-      dlg("Firestore Timestamp: $firestoreTimestamp");
+        dlg("Firestore Timestamp: $firestoreTimestamp");
 
-      // Post ke Firestore
-      await addSchedule(scheduledTime: firestoreTimestamp);
+        // Buat settings map dan hapus field yang null atau kosong
+        Map<String, dynamic> settings = {
+          'auto': automatic,
+          'waterPump': waterPump,
+          'mixer': mixer,
+          'phUp': controllerPhUp.text.isNotEmpty ? controllerPhUp.text : null,
+          'phDown':
+              controllerPhDown.text.isNotEmpty ? controllerPhDown.text : null,
+          'nutrisi':
+              controllerNutrisi.text.isNotEmpty ? controllerNutrisi.text : null,
+          'water':
+              controllerWater.text.isNotEmpty ? controllerWater.text : null,
+        };
+
+        // Hapus nilai null dari map settings
+        settings.removeWhere((key, value) => value == null);
+
+        // Kirim data ke Firestore
+        await FirebaseFirestore.instance.collection('schedule').add({
+          'isRun': false, // Default value untuk isRun
+          'scheduled_time': firestoreTimestamp,
+          'settings': settings,
+        });
+
+        showTopSnackBar(
+          context: context,
+          title: 'Hydroponik Smart',
+          message: 'Schedule berhasil ditambahkan',
+        );
+
+        dlg("Data berhasil dikirim ke Firestore!");
+      } else {
+        dlg("Tanggal atau waktu belum dipilih!");
+      }
+    } catch (e) {
+      dlg("Error saat mengirim ke Firestore: ${e.toString()}");
     }
   }
-
-
-  
-  Future<void> addSchedule({required Timestamp scheduledTime, Map<String, dynamic>? settings}) async {
-  try {
-    // Hapus field null dalam map settings
-    settings?.removeWhere((key, value) => value == null);
-
-    await FirebaseFirestore.instance.collection('schedule').add({
-      'isRun': false, // Default value untuk isRun
-      'scheduled_time': scheduledTime,
-      'settings': settings,
-    });
-
-    dlg("Data berhasil dikirim ke Firestore!");
-  } catch (e) {
-    dlg("Error saat mengirim ke Firestore: $e");
-  }
-}
-
 }

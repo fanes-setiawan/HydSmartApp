@@ -40,7 +40,9 @@ class _ScheduleViewState extends State<ScheduleView> {
           if (_controller.selectedDay != null &&
               _controller.selectedTime != null)
             TextButton(
-              onPressed: () {},
+              onPressed: () {
+                _controller.addSchedule();
+              },
               child: const Text(
                 "Tambahkan",
                 style: TextStyle(
@@ -115,8 +117,7 @@ class _ScheduleViewState extends State<ScheduleView> {
                           title: "Automatic",
                           value: _controller.automatic,
                           onChanged: (value) async {
-                            // _controller.setAutomatic(value);
-                            // await _controller.updateSettings();
+                            _controller.setAutomatic(value);
                           },
                         ),
                         const Divider(height: 0.1, thickness: 0.5),
@@ -130,8 +131,7 @@ class _ScheduleViewState extends State<ScheduleView> {
                           title: "Water Pump",
                           value: _controller.waterPump,
                           onChanged: (value) async {
-                            // _controller.setWaterPump(value);
-                            // await _controller.updateSettings();
+                            _controller.setWaterPump(value);
                           },
                         ),
                         const Divider(height: 0.1, thickness: 0.5),
@@ -143,8 +143,7 @@ class _ScheduleViewState extends State<ScheduleView> {
                           title: "Mixer",
                           value: _controller.mixer,
                           onChanged: (value) async {
-                            // _controller.setMixer(value);
-                            // await _controller.updateSettings();
+                            _controller.setMixer(value);
                           },
                         ),
                         const Divider(height: 0.1, thickness: 0.5),
@@ -152,7 +151,7 @@ class _ScheduleViewState extends State<ScheduleView> {
                           height: 10.0,
                         ),
                         TextField(
-                          // controller: _controller,
+                          controller: _controller.controllerPhUp,
                           keyboardType: TextInputType.number,
                           textAlign: TextAlign.center,
                           decoration: InputDecoration(
@@ -178,7 +177,7 @@ class _ScheduleViewState extends State<ScheduleView> {
                           height: 10.0,
                         ),
                         TextField(
-                          // controller: _controller,
+                          controller: _controller.controllerPhDown,
                           keyboardType: TextInputType.number,
                           textAlign: TextAlign.center,
                           decoration: InputDecoration(
@@ -204,7 +203,7 @@ class _ScheduleViewState extends State<ScheduleView> {
                           height: 10.0,
                         ),
                         TextField(
-                          // controller: _controller,
+                          controller: _controller.controllerNutrisi,
                           keyboardType: TextInputType.number,
                           textAlign: TextAlign.center,
                           decoration: InputDecoration(
@@ -230,7 +229,7 @@ class _ScheduleViewState extends State<ScheduleView> {
                           height: 10.0,
                         ),
                         TextField(
-                          // controller: _controller,
+                          controller: _controller.controllerWater,
                           keyboardType: TextInputType.number,
                           textAlign: TextAlign.center,
                           decoration: InputDecoration(

@@ -1,5 +1,6 @@
 import 'package:hyd_smart_app/data/models/settings.dart';
 import 'package:hyd_smart_app/data/helper/db_helper.dart';
+import 'package:hyd_smart_app/core/components/logging.dart';
 import 'package:cloud_firestore/cloud_firestore.dart' as fire;
 
 class RemoteController {
@@ -52,7 +53,7 @@ class RemoteController {
     );
 
     await DBHelper().updateSettings(newSettings);
-    print("Settings updated in SQLite");
+    dlg("Settings updated in SQLite");
 
     await _firestore.collection('remote').doc('OrNOJUjtHdOhIgvnP2Yq').update({
       'auto': automatic,
@@ -60,7 +61,7 @@ class RemoteController {
       'mixer': mixer,
     });
 
-    print("Settings updated in Firestore");
+    dlg("Settings updated in Firestore");
   }
 
   // Tambahkan metode untuk mengubah nilai
@@ -84,6 +85,6 @@ class RemoteController {
     await _firestore.collection('remote').doc('OrNOJUjtHdOhIgvnP2Yq').update({
       field: value,
     });
-    print("$field updated to $value in Firestore");
+    dlg("$field updated to $value in Firestore");
   }
 }
