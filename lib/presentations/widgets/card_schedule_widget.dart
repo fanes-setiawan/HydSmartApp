@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hyd_smart_app/core/constans/colors.dart';
 import 'package:hyd_smart_app/core/assets/assets.gen.dart';
 import 'package:hyd_smart_app/core/format/format_time.dart';
+import 'package:hyd_smart_app/common/message/showTopSnackBarWithActions.dart';
 // ignore_for_file: must_be_immutable
 
 // ignore_for_file: public_member_api_docs, sort_constructors_first
@@ -53,7 +54,16 @@ class CardScheduleWidget extends StatelessWidget {
                 ),
                 const Spacer(),
                 IconButton(
-                  onPressed: onDelete,
+                  onPressed: () {
+                    showTopSnackBarWithActions(
+                      context: context,
+                      title: 'Delete Schedule',
+                      message: 'apakah anda yakin ingin menghapus jadwal ini?',
+                      textButton1: 'Cancel',
+                      textButton2: 'Delete',
+                      tapButton2:  onDelete,
+                    );
+                  },
                   icon: Assets.icons.trash.svg(
                     width: 20,
                     colorFilter: const ColorFilter.mode(
