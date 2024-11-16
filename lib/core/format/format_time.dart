@@ -11,4 +11,14 @@ class FormatTime {
   static Timestamp toFirestoreTimestamp({required DateTime dateTime}) {
     return Timestamp.fromDate(dateTime);
   }
+
+  static String formatDate(DateTime? dateTime) {
+    final DateFormat formatter = DateFormat('MMMM d, yyyy');
+    return formatter.format(dateTime!);
+  }
+
+  static String FormatTimes(DateTime? dateTime) {
+    final DateFormat formatter = DateFormat('h:mm:ss');
+    return formatter.format(dateTime!);
+  }
 }

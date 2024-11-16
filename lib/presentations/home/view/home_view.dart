@@ -29,9 +29,9 @@ class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.defauld,
+      backgroundColor: AppColors.stroke,
       appBar: AppBar(
-        backgroundColor: AppColors.defauld,
+        backgroundColor: AppColors.stroke,
         actions: [
           GestureDetector(
             onTap: () {
@@ -54,7 +54,7 @@ class _HomeViewState extends State<HomeView> {
             ),
           ),
           const SizedBox(
-          width: 10.0,
+            width: 10.0,
           ),
           IconButton(
             onPressed: () {
@@ -81,7 +81,7 @@ class _HomeViewState extends State<HomeView> {
               Container(
                 padding: const EdgeInsets.all(10.0),
                 decoration: BoxDecoration(
-                  color: AppColors.stroke,
+                  color: AppColors.white,
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Column(
@@ -193,7 +193,7 @@ class _HomeViewState extends State<HomeView> {
               Container(
                 padding: const EdgeInsets.all(10.0),
                 decoration: BoxDecoration(
-                  color: AppColors.stroke,
+                  color: AppColors.white,
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Column(

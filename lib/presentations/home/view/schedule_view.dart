@@ -4,9 +4,10 @@ import 'package:hyd_smart_app/core/constans/colors.dart';
 import 'package:hyd_smart_app/core/assets/assets.gen.dart';
 import 'package:hyd_smart_app/core/components/logging.dart';
 import 'package:hyd_smart_app/presentations/widgets/text_switch_button.dart';
+import 'package:hyd_smart_app/presentations/widgets/card_schedule_widget.dart';
+import 'package:hyd_smart_app/presentations/widgets/table_calendar_widget.dart';
 import 'package:hyd_smart_app/presentations/home/controller/schedule_controller.dart';
 // ignore_for_file: use_key_in_widget_constructors, library_private_types_in_public_api
-
 
 class ScheduleView extends StatefulWidget {
   @override
@@ -25,9 +26,9 @@ class _ScheduleViewState extends State<ScheduleView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.defauld,
+      backgroundColor: AppColors.stroke,
       appBar: AppBar(
-        backgroundColor: AppColors.defauld,
+        backgroundColor: AppColors.stroke,
         title: const Text(
           'Add Schedule',
           style: TextStyle(
@@ -60,31 +61,65 @@ class _ScheduleViewState extends State<ScheduleView> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              TableCalendar(
-                calendarStyle: const CalendarStyle(
-                  selectedDecoration: BoxDecoration(
-                    color: AppColors.primary,
-                  ),
-                  todayDecoration: BoxDecoration(
-                    color: AppColors.gray,
-                  ),
-                ),
-                firstDay: DateTime.utc(2010, 10, 16),
-                lastDay: DateTime.utc(2030, 3, 14),
-                focusedDay: DateTime.now(),
-                selectedDayPredicate: (day) {
-                  dlg(day.toString());
-                  return isSameDay(_controller.selectedDay, day);
-                },
-                onDaySelected: (selectedDay, focusedDay) {
-                  setState(() {
-                    _controller.selectedDay = null;
-                    _controller.selectedTime = null;
+              StreamBuilder<Map<DateTime, List<Map<String, dynamic>>>>(
+                stream: _controller.getEventsMap(),
+                builder: (context, snapshot) {
+                  final events = snapshot.data ?? {};
+                  _controller.getSettings(events);
 
-                    _controller.selectedDay = selectedDay;
-                    focusedDay = focusedDay;
-                    _controller.selectTime();
-                  });
+                  return Column(
+                    children: [
+                      TableCalendarWidget(
+                        focusedDay: DateTime.now(),
+                        selectedDay: _controller.selectedDay,
+                        events: events,
+                        onDaySelected: (selectedDay, focusedDay) {
+                          if (!isSameDay(
+                              _controller.selectedDay, selectedDay)) {
+                            setState(() {
+                              _controller.selectedDay = selectedDay;
+                            });
+                          }
+                        },
+                        onDayLongPressed: (selectedDay, focusedDay) {
+                          setState(() {
+                            _controller.selectedDay = null;
+                            _controller.selectedTime = null;
+
+                            _controller.selectedDay = selectedDay;
+                            _controller.selectTime();
+                          });
+                        },
+                      ),
+                      if (_controller.settingEvent.isNotEmpty)
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: GridView.builder(
+                            padding: EdgeInsets.zero,
+                            physics: const NeverScrollableScrollPhysics(), 
+                            gridDelegate:
+                                 const SliverGridDelegateWithFixedCrossAxisCount(
+                              childAspectRatio:  1.0,
+                              crossAxisCount: 2,
+                              mainAxisSpacing: 3,
+                              crossAxisSpacing: 2,
+                            ),
+                            itemCount: _controller.settingEvent.length,
+                            shrinkWrap: true,
+                            itemBuilder: (BuildContext context, int index) {
+                              var data = _controller.settingEvent[index];
+                              dlg(data);
+                              return CardScheduleWidget(
+                                data: data,
+                                onDelete: () {
+                                  _controller.deleteSchedule(data['id']);
+                                },
+                              );
+                            },
+                          ),
+                        ),
+                    ],
+                  );
                 },
               ),
               if (_controller.selectedDay != null &&

@@ -4,6 +4,8 @@ import 'package:hyd_smart_app/core/components/logging.dart';
 import 'package:hyd_smart_app/core/format/format_time.dart';
 import 'package:hyd_smart_app/core/model/combineDateAndTime.dart';
 import 'package:hyd_smart_app/common/message/showTopSnackBar.dart';
+// ignore_for_file: use_build_context_synchronously
+
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
 class ScheduleController {
@@ -27,6 +29,9 @@ class ScheduleController {
   final TextEditingController controllerNutrisi = TextEditingController();
   final TextEditingController controllerWater = TextEditingController();
 
+  List<Map<String, dynamic>> settingEvent = [];
+  List<Map<String, dynamic>> allEvents = [];
+
   // Tambahkan metode untuk mengubah nilai
   void setAutomatic(bool value) {
     setState(() {
@@ -46,8 +51,50 @@ class ScheduleController {
     });
   }
 
+  clearDataInput() {
+    controllerPhUp.clear();
+    controllerPhDown.clear();
+    controllerNutrisi.clear();
+    controllerWater.clear();
+    waterPump = false;
+    mixer = false;
+  }
+
+  Stream<Map<DateTime, List<Map<String, dynamic>>>> getEventsMap() {
+    return FirebaseFirestore.instance
+        .collection('schedule')
+        .snapshots()
+        .map((snapshot) {
+      Map<DateTime, List<Map<String, dynamic>>> events = {};
+
+      for (var doc in snapshot.docs) {
+        final data = doc.data();
+        final scheduledTime = (data['scheduled_time'] as Timestamp).toDate();
+        final dateKey = DateTime(
+            scheduledTime.year, scheduledTime.month, scheduledTime.day);
+
+        if (events[dateKey] == null) {
+          events[dateKey] = [];
+        }
+        events[dateKey]!.add({
+          'id': doc.id,
+          'scheduled_time': scheduledTime,
+          'settings': data['settings'] ?? {},
+        });
+        allEvents.add({
+          'id': doc.id,
+          'scheduled_time': scheduledTime,
+          'settings': data['settings'] ?? {},
+        });
+      }
+
+      return events;
+    });
+  }
+
   Future<void> selectTime() async {
     final TimeOfDay? pickedTime = await showTimePicker(
+      barrierDismissible: false,
       context: context,
       barrierLabel: 'Time Schedule',
       initialEntryMode: TimePickerEntryMode.input,
@@ -63,7 +110,7 @@ class ScheduleController {
 
   Future<void> addSchedule() async {
     try {
-      // Validasi bahwa tanggal dan waktu telah dipilih
+      clearDataInput();
       if (selectedDay != null && selectedTime != null) {
         // Gabungkan tanggal dan waktu
         DateTime combinedDateTime =
@@ -96,6 +143,10 @@ class ScheduleController {
           'scheduled_time': firestoreTimestamp,
           'settings': settings,
         });
+        selectedTime = null;
+        setState(() {});
+        settings.clear();
+        clearDataInput();
 
         showTopSnackBar(
           context: context,
@@ -110,5 +161,38 @@ class ScheduleController {
     } catch (e) {
       dlg("Error saat mengirim ke Firestore: ${e.toString()}");
     }
+  }
+
+  void getSettings(Map<DateTime, List<Map<String, dynamic>>> events) {
+    DateTime day = selectedDay ?? DateTime.now();
+    settingEvent.clear();
+
+    for (var key in events.keys) {
+      final List<Map<String, dynamic>> eventList = events[key] ?? [];
+      for (var event in eventList) {
+        if (event['scheduled_time'] != null) {
+          DateTime eventDateTime;
+          if (event['scheduled_time'] is Timestamp) {
+            eventDateTime = (event['scheduled_time'] as Timestamp).toDate();
+          } else {
+            eventDateTime = event['scheduled_time'] as DateTime;
+          }
+
+          if (FormatTime.formatDate(day) ==
+              FormatTime.formatDate(eventDateTime)) {
+            settingEvent.add(event);
+          }
+        }
+      }
+    }
+  }
+
+  void deleteSchedule(String id) async {
+    await FirebaseFirestore.instance.collection('schedule').doc(id).delete();
+    showTopSnackBar(
+      context: context,
+      title: 'Hydroponik Smart',
+      message: 'Schedule berhasil dihapus',
+    );
   }
 }

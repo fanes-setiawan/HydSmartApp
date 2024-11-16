@@ -116,6 +116,9 @@ class $AssetsIconsGen {
   SvgGenImage get toggleRight =>
       const SvgGenImage('assets/icons/toggle-right.svg');
 
+  /// File path: assets/icons/trash.svg
+  SvgGenImage get trash => const SvgGenImage('assets/icons/trash.svg');
+
   /// File path: assets/icons/trending-down-square.svg
   SvgGenImage get trendingDownSquare =>
       const SvgGenImage('assets/icons/trending-down-square.svg');
@@ -161,6 +164,7 @@ class $AssetsIconsGen {
         server,
         toggleLeft,
         toggleRight,
+        trash,
         trendingDownSquare,
         workScheduleIcon,
         xCircle,
