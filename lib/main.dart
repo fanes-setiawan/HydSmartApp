@@ -4,6 +4,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:hyd_smart_app/firebase_options.dart';
 import 'package:hyd_smart_app/core/constans/colors.dart';
 import 'package:hyd_smart_app/presentations/navbar.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:hyd_smart_app/common/message/firebase.dart';
+import 'package:hyd_smart_app/common/message/notification.dart';
 
 
 
@@ -14,6 +17,9 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  FirebaseMessaging.onBackgroundMessage(NotificationHandler().firebaseMessagingBackgroundHandler);
+
+  setupFirebaseMessaging();
   runApp(const MyApp());
 }
 

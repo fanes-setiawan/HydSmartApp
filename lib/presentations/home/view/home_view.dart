@@ -3,7 +3,9 @@ import 'package:get/get.dart';
 import 'package:graphic/graphic.dart';
 import 'package:flutter/material.dart';
 import 'package:hyd_smart_app/core/constans/colors.dart';
+import 'package:hyd_smart_app/data/helper/db_helper.dart';
 import 'package:hyd_smart_app/core/assets/assets.gen.dart';
+import 'package:hyd_smart_app/common/message/firebase.dart';
 import 'package:hyd_smart_app/core/components/logging.dart';
 import 'package:hyd_smart_app/presentations/home/view/notif_view.dart';
 import 'package:hyd_smart_app/presentations/home/view/schedule_view.dart';
@@ -24,6 +26,7 @@ class _HomeViewState extends State<HomeView> {
   void initState() {
     super.initState();
     _controller = HomeController(context: context, setState: setState);
+    NotificationHandler.initialize(context);
   }
 
   @override
@@ -33,25 +36,35 @@ class _HomeViewState extends State<HomeView> {
       appBar: AppBar(
         backgroundColor: AppColors.stroke,
         actions: [
-          GestureDetector(
-            onTap: () {
-              Get.to(const NotifView());
+          StreamBuilder<List<Map<String, dynamic>>>(
+            stream: DBHelper().getUnreadNotifications(),
+            builder: (context, snapshot) {
+              final unreadCount =
+                  snapshot.data?.length ?? 0; // Default ke 0 jika null
+              return GestureDetector(
+                onTap: () {
+                  Get.to(const NotifView()); // Buka halaman notifikasi
+                },
+                child: Badge(
+                  isLabelVisible: unreadCount != 0,
+                  label: (unreadCount != 0)
+                      ? Text(
+                          "$unreadCount",
+                          style: const TextStyle(
+                            color: Colors.white,
+                          ),
+                        )
+                      : null,
+                  child: Assets.icons.bell.svg(
+                    width: 25,
+                    colorFilter: const ColorFilter.mode(
+                      AppColors.gray,
+                      BlendMode.srcIn,
+                    ),
+                  ),
+                ),
+              );
             },
-            child: Badge(
-              label: const Text(
-                "4",
-                style: TextStyle(
-                  color: Colors.white,
-                ),
-              ),
-              child: Assets.icons.bell.svg(
-                width: 25,
-                colorFilter: const ColorFilter.mode(
-                  AppColors.gray,
-                  BlendMode.srcIn,
-                ),
-              ),
-            ),
           ),
           const SizedBox(
             width: 10.0,

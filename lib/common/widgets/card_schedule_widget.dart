@@ -18,6 +18,8 @@ class CardScheduleWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ScrollController _scrollController = ScrollController();
+
     final settings = data['settings'] as Map<String, dynamic>;
 
     // Filter settings untuk hanya menampilkan key yang memiliki nilai
@@ -77,7 +79,8 @@ class CardScheduleWidget extends StatelessWidget {
             const Divider(),
             Expanded(
               child: Scrollbar(
-                thumbVisibility: true,
+                 thumbVisibility: true, 
+        controller: _scrollController, // Berikan ScrollController
                 child: SingleChildScrollView(
                   controller: ScrollController(),
                   child: Column(

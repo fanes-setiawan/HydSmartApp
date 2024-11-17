@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hyd_smart_app/core/constans/colors.dart';
 import 'package:hyd_smart_app/core/assets/assets.gen.dart';
-import 'package:hyd_smart_app/presentations/widgets/card_widget.dart';
-import 'package:hyd_smart_app/presentations/widgets/text_input_button.dart';
-import 'package:hyd_smart_app/presentations/widgets/text_switch_button.dart';
+import 'package:hyd_smart_app/common/widgets/card_widget.dart';
+import 'package:hyd_smart_app/common/widgets/text_input_button.dart';
+import 'package:hyd_smart_app/common/widgets/text_switch_button.dart';
 import 'package:hyd_smart_app/presentations/remote/controller/remote_controller.dart';
 
 class RemoteView extends StatefulWidget {

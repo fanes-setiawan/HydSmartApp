@@ -3,9 +3,9 @@ import 'package:table_calendar/table_calendar.dart';
 import 'package:hyd_smart_app/core/constans/colors.dart';
 import 'package:hyd_smart_app/core/assets/assets.gen.dart';
 import 'package:hyd_smart_app/core/components/logging.dart';
-import 'package:hyd_smart_app/presentations/widgets/text_switch_button.dart';
-import 'package:hyd_smart_app/presentations/widgets/card_schedule_widget.dart';
-import 'package:hyd_smart_app/presentations/widgets/table_calendar_widget.dart';
+import 'package:hyd_smart_app/common/widgets/text_switch_button.dart';
+import 'package:hyd_smart_app/common/widgets/card_schedule_widget.dart';
+import 'package:hyd_smart_app/common/widgets/table_calendar_widget.dart';
 import 'package:hyd_smart_app/presentations/home/controller/schedule_controller.dart';
 // ignore_for_file: use_key_in_widget_constructors, library_private_types_in_public_api
 
@@ -56,7 +56,6 @@ class _ScheduleViewState extends State<ScheduleView> {
         ],
       ),
       body: SingleChildScrollView(
-        controller: ScrollController(),
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -77,6 +76,7 @@ class _ScheduleViewState extends State<ScheduleView> {
                           if (!isSameDay(
                               _controller.selectedDay, selectedDay)) {
                             setState(() {
+                              _controller.selectedTime = null;
                               _controller.selectedDay = selectedDay;
                             });
                           }
@@ -96,10 +96,10 @@ class _ScheduleViewState extends State<ScheduleView> {
                           padding: const EdgeInsets.all(8.0),
                           child: GridView.builder(
                             padding: EdgeInsets.zero,
-                            physics: const NeverScrollableScrollPhysics(), 
+                            physics: const NeverScrollableScrollPhysics(),
                             gridDelegate:
-                                 const SliverGridDelegateWithFixedCrossAxisCount(
-                              childAspectRatio:  1.0,
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                              childAspectRatio: 1.0,
                               crossAxisCount: 2,
                               mainAxisSpacing: 3,
                               crossAxisSpacing: 2,
@@ -134,13 +134,31 @@ class _ScheduleViewState extends State<ScheduleView> {
                         color: AppColors.white),
                     child: Column(
                       children: [
-                        const Text(
-                          'Control',
-                          style: TextStyle(
-                            color: AppColors.gray,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: const Text(
+                                'Control',
+                                style: TextStyle(
+                                  color: AppColors.gray,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                _controller.selectedTime = null;
+                                setState(() {});
+                              },
+                              child: const Text(
+                                "Tutup",
+                                style: TextStyle(
+                                    color: AppColors.red,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          ],
                         ),
                         TextSwitchRow(
                           leading: Assets.icons.boxWire.svg(

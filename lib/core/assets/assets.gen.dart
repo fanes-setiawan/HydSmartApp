@@ -178,6 +178,9 @@ class $AssetsLogoGen {
   /// File path: assets/logo/apk.png
   AssetGenImage get apk => const AssetGenImage('assets/logo/apk.png');
 
+  /// File path: assets/logo/logo-nbg.svg
+  SvgGenImage get logoNbg => const SvgGenImage('assets/logo/logo-nbg.svg');
+
   /// File path: assets/logo/logo_hy.png
   AssetGenImage get logoHyPng => const AssetGenImage('assets/logo/logo_hy.png');
 
@@ -185,7 +188,7 @@ class $AssetsLogoGen {
   SvgGenImage get logoHySvg => const SvgGenImage('assets/logo/logo_hy.svg');
 
   /// List of all assets
-  List<dynamic> get values => [apk, logoHyPng, logoHySvg];
+  List<dynamic> get values => [apk, logoNbg, logoHyPng, logoHySvg];
 }
 
 class Assets {
