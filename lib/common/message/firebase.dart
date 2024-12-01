@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:hyd_smart_app/data/helper/db_helper.dart';
+import 'package:hyd_smart_app/core/components/logging.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 class NotificationHandler {
@@ -9,12 +10,12 @@ class NotificationHandler {
 
     // Mendapatkan token FCM (gunakan jika Anda perlu mengirim notifikasi ke perangkat ini)
     messaging.getToken().then((token) {
-      print("FCM Token: $token");
+      dlg("FCM Token: $token");
     });
 
     // Listener untuk notifikasi saat aplikasi di foreground
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      print("Notifikasi diterima: ${message.notification?.title}");
+      dlg("Notifikasi diterima: ${message.notification?.title}");
       if (message.notification != null) {
         _saveNotificationToLocal(
           title: message.notification?.title ?? '',
@@ -26,12 +27,12 @@ class NotificationHandler {
 
     // Listener untuk notifikasi yang di-klik
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      print("Notifikasi diklik: ${message.notification?.title}");
+      dlg("Notifikasi diklik: ${message.notification?.title}");
     });
   }
 
   Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-    print('---------------> Background Handler');
+    dlg('---------------> Background Handler');
     final db = DBHelper();
     await Firebase.initializeApp();
 
@@ -40,7 +41,7 @@ class NotificationHandler {
       body: message.notification?.body ?? '',
       timestamp: DateTime.now(),
     );
-    print("Notifikasi background disimpan ke lokal");
+    dlg("Notifikasi background disimpan ke lokal");
   }
 
   static Future<void> _saveNotificationToLocal({
@@ -53,6 +54,6 @@ class NotificationHandler {
       body: body,
       timestamp: timestamp,
     );
-    print("Notifikasi disimpan ke lokal");
+    dlg("Notifikasi disimpan ke lokal");
   }
 }

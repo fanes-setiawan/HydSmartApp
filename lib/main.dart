@@ -4,20 +4,20 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:hyd_smart_app/firebase_options.dart';
 import 'package:hyd_smart_app/core/constans/colors.dart';
 import 'package:hyd_smart_app/presentations/navbar.dart';
+import 'package:hyd_smart_app/core/components/logging.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:hyd_smart_app/common/message/firebase.dart';
-import 'package:hyd_smart_app/common/message/notification.dart';
+import 'package:hyd_smart_app/common/message/fcm_token.dart';
+import 'package:hyd_smart_app/common/message/local_notifications.dart';
 
 
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  FirebaseMessaging.onBackgroundMessage(NotificationHandler().firebaseMessagingBackgroundHandler);
+  FirebaseMessaging.onBackgroundMessage(backgroundHandler);
+  await LocalNotifications.init(); 
 
   setupFirebaseMessaging();
   runApp(const MyApp());
@@ -42,4 +42,13 @@ class MyApp extends StatelessWidget {
       
     );
   }
+}
+Future<void> backgroundHandler(RemoteMessage message) async {
+  dlg("Received background message: ${message.notification?.title}");
+  LocalNotifications.showNotification(
+    0,
+    message.notification?.title ?? 'No Title',
+    message.notification?.body ?? 'No Body',
+    message.data.toString(),
+  );
 }
