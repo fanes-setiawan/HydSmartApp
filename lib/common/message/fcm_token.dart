@@ -27,7 +27,7 @@ void _sendTokenToFirestore(String token) async {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   try {
-    var userRef = firestore.collection('fcmTokens').doc(token);
+    var userRef = firestore.collection('fcmTokens').doc("fcm-token");
     await userRef.set({
       'gcmToken': token,
       'updatedAt': FieldValue.serverTimestamp(),
