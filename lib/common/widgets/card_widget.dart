@@ -12,8 +12,21 @@ class CardWidget extends StatelessWidget {
       width: MediaQuery.of(context).size.width,
       height: 65,
       decoration: BoxDecoration(
-        color: AppColors.white,
+        gradient: LinearGradient(
+          begin: Alignment.bottomRight,
+          end: Alignment.bottomCenter,
+          colors: <Color>[
+          AppColors.primary,
+          AppColors.primary.withOpacity(0.1),
+        ]),
         borderRadius: BorderRadius.circular(18),
+        boxShadow:   [
+        BoxShadow(
+        color: AppColors.gray.withOpacity(0.1),
+        blurRadius:3,
+        offset: const Offset(1, 3),
+        ),
+        ],
       ),
       child: ListTile(
         leading: Assets.icons.checkStampFilled.svg(

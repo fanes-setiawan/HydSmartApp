@@ -136,8 +136,8 @@ class _ScheduleViewState extends State<ScheduleView> {
                       children: [
                         Row(
                           children: [
-                            Expanded(
-                              child: const Text(
+                           const  Expanded(
+                              child:  Text(
                                 'Control',
                                 style: TextStyle(
                                   color: AppColors.gray,

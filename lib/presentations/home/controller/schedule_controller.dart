@@ -110,7 +110,6 @@ class ScheduleController {
 
   Future<void> addSchedule() async {
     try {
-      clearDataInput();
       if (selectedDay != null && selectedTime != null) {
         // Gabungkan tanggal dan waktu
         DateTime combinedDateTime =
@@ -118,20 +117,15 @@ class ScheduleController {
         Timestamp firestoreTimestamp =
             FormatTime.toFirestoreTimestamp(dateTime: combinedDateTime);
 
-        dlg("Firestore Timestamp: $firestoreTimestamp");
-
         // Buat settings map dan hapus field yang null atau kosong
         Map<String, dynamic> settings = {
           'auto': automatic,
           'waterPump': waterPump,
           'mixer': mixer,
-          'phUp': controllerPhUp.text.isNotEmpty ? controllerPhUp.text : null,
-          'phDown':
-              controllerPhDown.text.isNotEmpty ? controllerPhDown.text : null,
-          'nutrisi':
-              controllerNutrisi.text.isNotEmpty ? controllerNutrisi.text : null,
-          'water':
-              controllerWater.text.isNotEmpty ? controllerWater.text : null,
+          'phUp': controllerPhUp.text,
+          'phDown': controllerPhDown.text,
+          'nutrisi':controllerNutrisi.text,
+          'water': controllerWater.text,
         };
 
         // Hapus nilai null dari map settings

@@ -18,7 +18,7 @@ class CardScheduleWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ScrollController _scrollController = ScrollController();
+    final ScrollController scrollController = ScrollController();
 
     final settings = data['settings'] as Map<String, dynamic>;
 
@@ -28,8 +28,27 @@ class CardScheduleWidget extends StatelessWidget {
             (entry) => entry.value != null && entry.value.toString().isNotEmpty)
         .toList();
 
-    return Card(
-      color: AppColors.white,
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topRight,
+          end: Alignment.bottomLeft,
+          stops: const [0.0, 1.0],
+          colors: [
+            AppColors.primary.withOpacity(0.8),
+            AppColors.primary.withOpacity(0.0),
+          ],
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.gray.withOpacity(0.2),
+            blurRadius: 3,
+            offset: const Offset(3, 3),
+          ),
+        ],
+        borderRadius: BorderRadius.circular(20.0)
+      ),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
@@ -63,7 +82,7 @@ class CardScheduleWidget extends StatelessWidget {
                       message: 'apakah anda yakin ingin menghapus jadwal ini?',
                       textButton1: 'Cancel',
                       textButton2: 'Delete',
-                      tapButton2:  onDelete,
+                      tapButton2: onDelete,
                     );
                   },
                   icon: Assets.icons.trash.svg(
@@ -79,8 +98,8 @@ class CardScheduleWidget extends StatelessWidget {
             const Divider(),
             Expanded(
               child: Scrollbar(
-                 thumbVisibility: true, 
-        controller: _scrollController, // Berikan ScrollController
+                thumbVisibility: true,
+                controller: scrollController, // Berikan ScrollController
                 child: SingleChildScrollView(
                   controller: ScrollController(),
                   child: Column(
