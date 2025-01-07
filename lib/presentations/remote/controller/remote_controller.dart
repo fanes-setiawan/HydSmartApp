@@ -5,7 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart' as fire;
 
 class RemoteController {
   final fire.FirebaseFirestore _firestore = fire.FirebaseFirestore.instance;
-  final void Function(bool automatic, bool waterPump, bool mixer) onSettingsChanged;
+  final void Function(bool automatic, bool waterPump, bool mixer ,int auto_check) onSettingsChanged;
 
   RemoteController({
     required this.onSettingsChanged,
@@ -14,6 +14,7 @@ class RemoteController {
   bool automatic = false;
   bool waterPump = false;
   bool mixer = false;
+  int autoCheck = 1;
 
   Future<void> loadSettings() async {
     // Load dari SQLite
@@ -23,13 +24,14 @@ class RemoteController {
       automatic = settings.automatic;
       waterPump = settings.waterPump;
       mixer = settings.mixer;
-      onSettingsChanged(automatic, waterPump, mixer);
+      onSettingsChanged(automatic, waterPump, mixer , autoCheck);
     } else {
       await DBHelper().insertSettings(Settings(
         id: 1,
         automatic: false,
         waterPump: false,
         mixer: false,
+        autoCheck: 1
       ));
     }
 
@@ -40,7 +42,8 @@ class RemoteController {
       automatic = data['auto'] ?? false;
       waterPump = data['waterPump'] ?? false;
       mixer = data['mixer'] ?? false;
-      onSettingsChanged(automatic, waterPump, mixer);
+      autoCheck = data['autoCheck']??1;
+      onSettingsChanged(automatic, waterPump, mixer , autoCheck);
     }
   }
 
@@ -50,6 +53,7 @@ class RemoteController {
       automatic: automatic,
       waterPump: waterPump,
       mixer: mixer,
+      autoCheck: autoCheck
     );
 
     await DBHelper().updateSettings(newSettings);
@@ -59,6 +63,7 @@ class RemoteController {
       'auto': automatic,
       'waterPump': waterPump,
       'mixer': mixer,
+      'autoCheck':autoCheck
     });
 
     dlg("Settings updated in Firestore");
@@ -67,17 +72,22 @@ class RemoteController {
   // Tambahkan metode untuk mengubah nilai
   void setAutomatic(bool value) {
     automatic = value;
-    onSettingsChanged(automatic, waterPump, mixer);
+    onSettingsChanged(automatic, waterPump, mixer,autoCheck);
   }
 
   void setWaterPump(bool value) {
     waterPump = value;
-    onSettingsChanged(automatic, waterPump, mixer);
+    onSettingsChanged(automatic, waterPump, mixer,autoCheck);
   }
 
   void setMixer(bool value) {
     mixer = value;
-    onSettingsChanged(automatic, waterPump, mixer);
+    onSettingsChanged(automatic, waterPump, mixer,autoCheck);
+  }
+
+  void setAutoCheck(int dataNumber) {
+    autoCheck = dataNumber;
+    onSettingsChanged(automatic, waterPump, mixer,autoCheck);
   }
 
   // Fungsi untuk memperbarui field di Firestore

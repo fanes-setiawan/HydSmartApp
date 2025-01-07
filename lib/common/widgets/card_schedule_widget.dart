@@ -31,15 +31,7 @@ class CardScheduleWidget extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topRight,
-          end: Alignment.bottomLeft,
-          stops: const [0.0, 1.0],
-          colors: [
-            AppColors.primary.withOpacity(0.8),
-            AppColors.primary.withOpacity(0.0),
-          ],
-        ),
+       color: AppColors.white,
         boxShadow: [
           BoxShadow(
             color: AppColors.gray.withOpacity(0.2),

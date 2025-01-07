@@ -133,7 +133,7 @@ class ScheduleController {
 
         // Kirim data ke Firestore
         await FirebaseFirestore.instance.collection('schedule').add({
-          'isRun': false, // Default value untuk isRun
+          'isRun': false,
           'scheduled_time': firestoreTimestamp,
           'settings': settings,
         });

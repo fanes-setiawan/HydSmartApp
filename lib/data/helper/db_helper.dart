@@ -21,21 +21,19 @@ class DBHelper {
     final dbPath = await getDatabasesPath();
     final path = join(dbPath, 'app_data.db');
 
-    return await openDatabase(
-      path,
-      version: 2, // Pastikan versi terbaru untuk migrasi jika diperlukan
-      onCreate: (db, version) async {
-        // Tabel settings
-        await db.execute('''
+    return await openDatabase(path, version: 3, onCreate: (db, version) async {
+      // Tabel settings
+      await db.execute('''
           CREATE TABLE settings(
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             automatic INTEGER NOT NULL,
             water_pump INTEGER NOT NULL,
-            mixer INTEGER NOT NULL
+            mixer INTEGER NOT NULL,
+            auto_check INTEGER NOT NULL
           )
         ''');
-        // Tabel notifications
-        await db.execute('''
+      // Tabel notifications
+      await db.execute('''
           CREATE TABLE notifications(
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             title TEXT,
@@ -44,21 +42,39 @@ class DBHelper {
             isRead INTEGER DEFAULT 0
           )
         ''');
-      },
-      onUpgrade: (db, oldVersion, newVersion) async {
-        if (oldVersion < 2) {
-          await db.execute('''
-            CREATE TABLE IF NOT EXISTS notifications(
-              id INTEGER PRIMARY KEY AUTOINCREMENT,
-              title TEXT,
-              body TEXT,
-              timestamp TEXT,
-              isRead INTEGER DEFAULT 0
-            )
-          ''');
+    }, onUpgrade: (db, oldVersion, newVersion) async {
+      if (oldVersion < 2) {
+        await db.execute(
+            'ALTER TABLE settings ADD COLUMN auto_check INTEGER DEFAULT 0');
+
+        await db.execute('''
+      CREATE TABLE IF NOT EXISTS notifications (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        title TEXT NOT NULL,
+        body TEXT NOT NULL,
+        timestamp TEXT NOT NULL,
+        isRead INTEGER DEFAULT 0
+      )
+    ''');
+      }
+      if (oldVersion < 3) {
+        // Check if 'auto_check' column exists, if not, add it
+        var columns = await db.rawQuery('PRAGMA table_info(settings)');
+        bool autoCheckExists =
+            columns.any((column) => column['name'] == 'auto_check');
+        if (!autoCheckExists) {
+          await db.execute(
+              'ALTER TABLE settings ADD COLUMN auto_check INTEGER DEFAULT 0');
         }
-      },
-    );
+      }
+    });
+  }
+
+  void _onUpgrade(Database db, int oldVersion, int newVersion) async {
+    if (oldVersion < 2) {
+      await db.execute(
+          'ALTER TABLE settings ADD COLUMN auto_check INTEGER DEFAULT 0');
+    }
   }
 
   // ---------------- SETTINGS METHODS ----------------
@@ -92,7 +108,6 @@ class DBHelper {
       return null;
     }
   }
-
   // ---------------- NOTIFICATIONS METHODS ----------------
 
   Future<int> insertNotification({
@@ -110,17 +125,15 @@ class DBHelper {
   }
 
   Stream<List<Map<String, dynamic>>> getAllNotifications() async* {
-  final db = await database;
+    final db = await database;
 
-  // Gunakan Stream.periodic untuk polling data dari database
-  yield* Stream.periodic(
-    const Duration(seconds: 1),
-    (_) async {
-      return await db.query('notifications', orderBy: 'timestamp DESC');
-    },
-  ).asyncMap((event) => event); // Konversi hasil menjadi Stream async
-}
-
+    yield* Stream.periodic(
+      const Duration(seconds: 1),
+      (_) async {
+        return await db.query('notifications', orderBy: 'timestamp DESC');
+      },
+    ).asyncMap((event) => event);
+  }
 
   Stream<List<Map<String, dynamic>>> getUnreadNotifications() async* {
     final db = await database;
@@ -135,8 +148,7 @@ class DBHelper {
         );
         return result;
       },
-    ).asyncMap(
-        (event) => event); 
+    ).asyncMap((event) => event);
   }
 
   Future<void> markNotificationAsRead(int id) async {
@@ -150,13 +162,12 @@ class DBHelper {
   }
 
   Future<void> markAllNotificationsAsRead() async {
-  final db = await database;
-  await db.update(
-    'notifications',
-    {'isRead': 1},
-  );
-}
-
+    final db = await database;
+    await db.update(
+      'notifications',
+      {'isRead': 1},
+    );
+  }
 
   Future<void> deleteNotification(int id) async {
     final db = await database;

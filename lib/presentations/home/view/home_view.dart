@@ -39,11 +39,10 @@ class _HomeViewState extends State<HomeView> {
           StreamBuilder<List<Map<String, dynamic>>>(
             stream: DBHelper().getUnreadNotifications(),
             builder: (context, snapshot) {
-              final unreadCount =
-                  snapshot.data?.length ?? 0; // Default ke 0 jika null
+              final unreadCount = snapshot.data?.length ?? 0; //
               return GestureDetector(
                 onTap: () {
-                  Get.to(const NotifView()); // Buka halaman notifikasi
+                  Get.to(const NotifView());
                 },
                 child: Badge(
                   isLabelVisible: unreadCount != 0,
@@ -91,6 +90,7 @@ class _HomeViewState extends State<HomeView> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              
               Container(
                 padding: const EdgeInsets.all(10.0),
                 decoration: BoxDecoration(
@@ -130,8 +130,6 @@ class _HomeViewState extends State<HomeView> {
                             ),
                           );
                         }
-
-                        // final sensorDataPh = snapshot.data!;
 
                         return Container(
                           margin: const EdgeInsets.only(top: 10),

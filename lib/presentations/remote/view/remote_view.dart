@@ -18,16 +18,18 @@ class _RemoteViewState extends State<RemoteView> {
   bool _automatic = false;
   bool _waterPump = false;
   bool _mixer = false;
+  int? _autoCheck = 0;
 
   @override
   void initState() {
     super.initState();
     _controller = RemoteController(
-      onSettingsChanged: (automatic, waterPump, mixer) {
+      onSettingsChanged: (automatic, waterPump, mixer, autoCheck) {
         setState(() {
           _automatic = automatic;
           _waterPump = waterPump;
           _mixer = mixer;
+          _autoCheck = autoCheck;
         });
       },
     );
@@ -47,9 +49,16 @@ class _RemoteViewState extends State<RemoteView> {
                 height: 55.0,
               ),
               const CardWidget(),
-              const SizedBox(
-                height: 10.0,
-              ),
+               const SizedBox(height: 15.0),
+                const Align(
+                  alignment: Alignment.bottomLeft,
+                  child: Text(
+                    'Settings :',
+                    style: TextStyle(
+                      color: AppColors.gray,
+                    ),
+                  ),
+                ),
               Container(
                 width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
@@ -102,7 +111,78 @@ class _RemoteViewState extends State<RemoteView> {
                   ],
                 ),
               ),
+              if (_automatic == true) const SizedBox(height: 15.0),
+              if (_automatic == true)
+                const Align(
+                  alignment: Alignment.bottomLeft,
+                  child: Text(
+                    'Checking Sensor :',
+                    style: TextStyle(
+                      color: AppColors.gray,
+                    ),
+                  ),
+                ),
+              if (_automatic == true)
+                Card(
+                  color: AppColors.white,
+                  child: Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      controller: ScrollController(),
+                      child: Row(
+                        children: List.generate(
+                          5,
+                          (index) {
+                            bool selected = index ==
+                                (_autoCheck != 0 ? _autoCheck! - 1 : 0);
+
+                            return GestureDetector(
+                              onTap: () async {
+                                _controller.setAutoCheck(index + 1);
+                                await _controller.updateSettings();
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 12.0,
+                                  vertical: 8.0,
+                                ),
+                                margin: const EdgeInsets.only(right: 10.0),
+                                decoration: BoxDecoration(
+                                  color: selected
+                                      ? AppColors.primary
+                                      : AppColors.gray,
+                                  borderRadius: const BorderRadius.all(
+                                    Radius.circular(16.0),
+                                  ),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    "${index + 1}x/Jam",
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 11.0,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
               const SizedBox(height: 15.0),
+                const Align(
+                  alignment: Alignment.bottomLeft,
+                  child: Text(
+                    'Add :',
+                    style: TextStyle(
+                      color: AppColors.gray,
+                    ),
+                  ),
+                ),
               Container(
                 width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
