@@ -135,6 +135,12 @@ class DBHelper {
     ).asyncMap((event) => event);
   }
 
+  //delete all
+  Future<void> deleteAllNotifications() async {
+    final db = await database;
+    await db.delete('notifications');
+  }
+
   Stream<List<Map<String, dynamic>>> getUnreadNotifications() async* {
     final db = await database;
 

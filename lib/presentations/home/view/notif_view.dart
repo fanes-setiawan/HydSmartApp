@@ -3,6 +3,7 @@ import 'package:hyd_smart_app/core/constans/colors.dart';
 import 'package:hyd_smart_app/data/helper/db_helper.dart';
 import 'package:hyd_smart_app/core/assets/assets.gen.dart';
 import 'package:hyd_smart_app/core/format/format_time.dart';
+import 'package:hyd_smart_app/common/message/showTopSnackBarWithActions.dart';
 
 class NotifView extends StatefulWidget {
   const NotifView({super.key});
@@ -12,6 +13,7 @@ class NotifView extends StatefulWidget {
 }
 
 class _NotifViewState extends State<NotifView> {
+  int dataNotificationLength = 0;
   @override
   void initState() {
     super.initState();
@@ -19,7 +21,6 @@ class _NotifViewState extends State<NotifView> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
 
     DBHelper().markAllNotificationsAsRead();
@@ -39,7 +40,30 @@ class _NotifViewState extends State<NotifView> {
               fontWeight: FontWeight.bold,
             ),
           ),
-          actions: const [],
+          actions: [
+            dataNotificationLength >= 1
+                ? IconButton(
+                    onPressed: () {
+                      showTopSnackBarWithActions(
+                        context: context,
+                        title: 'Delete History Notifikasi',
+                        message:
+                            'apakah anda yakin ingin menghapus semua history?',
+                        textButton1: 'Cancel',
+                        textButton2: 'Delete',
+                        tapButton2: () {
+                          DBHelper().deleteAllNotifications();
+                        },
+                      );
+                    },
+                    icon: const Icon(
+                      Icons.delete,
+                      size: 24.0,
+                      color: AppColors.red,
+                    ),
+                  )
+                : Container(),
+          ],
         ),
         body: StreamBuilder<List<Map<String, dynamic>>>(
           stream: DBHelper().getAllNotifications(),
@@ -49,6 +73,7 @@ class _NotifViewState extends State<NotifView> {
             }
 
             final notifications = snapshot.data ?? [];
+            dataNotificationLength = notifications.length;
             if (notifications.isEmpty) {
               return const Center(child: Text("Tidak ada notifikasi"));
             }

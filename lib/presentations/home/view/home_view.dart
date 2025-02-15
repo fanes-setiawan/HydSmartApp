@@ -110,12 +110,6 @@ class _HomeViewState extends State<HomeView> {
                     StreamBuilder<List<Map<String, dynamic>>>(
                       stream: _controller.getSensorDataStream(),
                       builder: (context, snapshot) {
-                        dlg('Snapshot updated with ${snapshot.data} documents');
-                        dlg('StreamBuilder rebuild triggered');
-                        dlg('Connection state: ${snapshot.connectionState}');
-                        dlg('Has data: ${snapshot.hasData}');
-                        dlg('Error: ${snapshot.error}');
-                        dlg('Data: ${snapshot.data}');
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
                           return const Center(
@@ -143,10 +137,10 @@ class _HomeViewState extends State<HomeView> {
                                     datum['createdAt'] as String,
                                 scale: OrdinalScale(inflate: true),
                               ),
-                              'value': Variable(
-                                accessor: (Map datum) => datum['value'] as num,
+                              'phLevel': Variable(
+                                accessor: (Map datum) => datum['phLevel'] as num,
                                 scale: LinearScale(
-                                  max: 14,
+                                  max: 50,
                                   min: 0,
                                   tickCount: 7,
                                   formatter: (v) => '${v.toInt()} pH',
@@ -155,14 +149,14 @@ class _HomeViewState extends State<HomeView> {
                             },
                             marks: [
                               LineMark(
-                                position: Varset('createdAt') * Varset('value'),
+                                position: Varset('createdAt') * Varset('phLevel'),
                                 color: ColorEncode(
-                                  variable: 'value',
+                                  variable: 'phLevel',
                                   values: [AppColors.blue, AppColors.blue],
                                 ),
                               ),
                               PointMark(
-                                position: Varset('createdAt') * Varset('value'),
+                                position: Varset('createdAt') * Varset('phLevel'),
                               ),
                             ],
                             axes: [
@@ -186,7 +180,7 @@ class _HomeViewState extends State<HomeView> {
                             tooltip: TooltipGuide(
                               followPointer: [true, true],
                               align: Alignment.topLeft,
-                              variables: ['createdAt', 'value'],
+                              variables: ['createdAt', 'phLevel'],
                             ),
                             crosshair: CrosshairGuide(
                               followPointer: [false, true],
@@ -255,9 +249,9 @@ class _HomeViewState extends State<HomeView> {
                                     datum['createdAt'] as String,
                                 scale: OrdinalScale(inflate: true),
                               ),
-                              'nutrisiLevel': Variable(
+                              'tdsLevel': Variable(
                                 accessor: (Map datum) =>
-                                    datum['nutrisiLevel'] as num,
+                                    datum['tdsLevel'] as num,
                                 scale: LinearScale(
                                   max: 1400,
                                   min: 0,
@@ -269,9 +263,9 @@ class _HomeViewState extends State<HomeView> {
                             marks: [
                               IntervalMark(
                                 position: Varset('createdAt') *
-                                    Varset('nutrisiLevel'),
+                                    Varset('tdsLevel'),
                                 color: ColorEncode(
-                                  variable: 'nutrisiLevel',
+                                  variable: 'tdsLevel',
                                   values: [AppColors.primary, AppColors.black],
                                 ),
                                 size: SizeEncode(value: 10), // Lebar bar

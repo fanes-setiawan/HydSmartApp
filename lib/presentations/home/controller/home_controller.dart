@@ -32,7 +32,7 @@ class HomeController {
                 'createdAt': DateFormat('EEE HH:mm:ss').format(
                   (doc.data()['createdAt'] as Timestamp).toDate(),
                 ),
-                'value': doc.data()['phLevel'] as num,
+                'phLevel': doc.data()['phLevel'] as num,
               };
             } catch (e) {
               dlg('Error mapping document: $e');
@@ -42,7 +42,7 @@ class HomeController {
           .where((element) => element != null)
           .cast<Map<String, dynamic>>()
           .toList();
-      dlg('Mapped data: $data');
+      dlg('Mapped data pH ::: $data');
       return data.reversed.toList(); 
     });
   }
@@ -50,9 +50,9 @@ class HomeController {
   Stream<List<Map<String, dynamic>>> getNutrisiDataStream() {
   dlg('Getting nutrisi data stream...');
   return _firestore
-      .collection('nutrisiData')
+      .collection('tdsData')
       .orderBy('createdAt', descending: true)
-      .limit(5) // Membatasi hanya 5 data terbaru
+      .limit(5)
       .snapshots()
       .map((snapshot) {
     final data = snapshot.docs.map((doc) {
@@ -61,7 +61,7 @@ class HomeController {
           'createdAt': DateFormat('EEE HH:mm:ss').format(
             (doc.data()['createdAt'] as Timestamp).toDate(),
           ),
-          'nutrisiLevel': doc.data()['nutrisiLevel'] as num,
+          'tdsLevel': doc.data()['tdsLevel'] as num,
         };
       } catch (e) {
         dlg('Error mapping nutrisi document: $e');

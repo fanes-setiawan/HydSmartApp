@@ -1,9 +1,12 @@
+import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:hyd_smart_app/core/constans/colors.dart';
 import 'package:hyd_smart_app/core/assets/assets.gen.dart';
+import 'package:hyd_smart_app/common/widgets/button_ex.dart';
 import 'package:hyd_smart_app/common/widgets/card_widget.dart';
 import 'package:hyd_smart_app/common/widgets/text_input_button.dart';
 import 'package:hyd_smart_app/common/widgets/text_switch_button.dart';
+import 'package:hyd_smart_app/presentations/remote/view/calibration_view.dart';
 import 'package:hyd_smart_app/presentations/remote/controller/remote_controller.dart';
 
 class RemoteView extends StatefulWidget {
@@ -49,16 +52,16 @@ class _RemoteViewState extends State<RemoteView> {
                 height: 55.0,
               ),
               const CardWidget(),
-               const SizedBox(height: 15.0),
-                const Align(
-                  alignment: Alignment.bottomLeft,
-                  child: Text(
-                    'Settings :',
-                    style: TextStyle(
-                      color: AppColors.gray,
-                    ),
+              const SizedBox(height: 15.0),
+              const Align(
+                alignment: Alignment.bottomLeft,
+                child: Text(
+                  'Settings :',
+                  style: TextStyle(
+                    color: AppColors.gray,
                   ),
                 ),
+              ),
               Container(
                 width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
@@ -174,15 +177,51 @@ class _RemoteViewState extends State<RemoteView> {
                   ),
                 ),
               const SizedBox(height: 15.0),
-                const Align(
-                  alignment: Alignment.bottomLeft,
-                  child: Text(
-                    'Add :',
-                    style: TextStyle(
-                      color: AppColors.gray,
-                    ),
+              const Align(
+                alignment: Alignment.bottomLeft,
+                child: Text(
+                  'Kalibrasi :',
+                  style: TextStyle(
+                    color: AppColors.gray,
                   ),
                 ),
+              ),
+              Container(
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(18.0),
+                    color: AppColors.white),
+                child: Row(
+                  children: [
+                    ButtonEx(
+                      title: "Sensor TDS",
+                      icon: Assets.icons.tds,
+                      onTap: () {
+                        showCalibrationDialog(context , "tds");
+                        print("Sensor TDS ditekan");
+                      },
+                    ),
+                    ButtonEx(
+                      title: "Sensor PH",
+                      icon: Assets.icons.ph,
+                      onTap: () {
+                       showCalibrationDialog(context,'ph');
+                        print("Sensor PH ditekan");
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 15.0),
+              const Align(
+                alignment: Alignment.bottomLeft,
+                child: Text(
+                  'Larutan :',
+                  style: TextStyle(
+                    color: AppColors.gray,
+                  ),
+                ),
+              ),
               Container(
                 width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(

@@ -102,11 +102,17 @@ class $AssetsIconsGen {
   /// File path: assets/icons/more-cirle.svg
   SvgGenImage get moreCirle => const SvgGenImage('assets/icons/more-cirle.svg');
 
+  /// File path: assets/icons/ph.png
+  AssetGenImage get ph => const AssetGenImage('assets/icons/ph.png');
+
   /// File path: assets/icons/pie-chart.svg
   SvgGenImage get pieChart => const SvgGenImage('assets/icons/pie-chart.svg');
 
   /// File path: assets/icons/server.svg
   SvgGenImage get server => const SvgGenImage('assets/icons/server.svg');
+
+  /// File path: assets/icons/tds.png
+  AssetGenImage get tds => const AssetGenImage('assets/icons/tds.png');
 
   /// File path: assets/icons/toggle-left.svg
   SvgGenImage get toggleLeft =>
@@ -134,7 +140,7 @@ class $AssetsIconsGen {
   SvgGenImage get xOctagon => const SvgGenImage('assets/icons/x-octagon.svg');
 
   /// List of all assets
-  List<SvgGenImage> get values => [
+  List<dynamic> get values => [
         activity,
         alertTriangle,
         barChart2,
@@ -160,8 +166,10 @@ class $AssetsIconsGen {
         moon,
         moreCirle1,
         moreCirle,
+        ph,
         pieChart,
         server,
+        tds,
         toggleLeft,
         toggleRight,
         trash,
