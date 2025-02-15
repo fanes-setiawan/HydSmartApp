@@ -90,7 +90,6 @@ class _HomeViewState extends State<HomeView> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              
               Container(
                 padding: const EdgeInsets.all(10.0),
                 decoration: BoxDecoration(
@@ -138,9 +137,10 @@ class _HomeViewState extends State<HomeView> {
                                 scale: OrdinalScale(inflate: true),
                               ),
                               'phLevel': Variable(
-                                accessor: (Map datum) => datum['phLevel'] as num,
+                                accessor: (Map datum) =>
+                                    datum['phLevel'] as num,
                                 scale: LinearScale(
-                                  max: 50,
+                                  max: 14,
                                   min: 0,
                                   tickCount: 7,
                                   formatter: (v) => '${v.toInt()} pH',
@@ -149,14 +149,16 @@ class _HomeViewState extends State<HomeView> {
                             },
                             marks: [
                               LineMark(
-                                position: Varset('createdAt') * Varset('phLevel'),
+                                position:
+                                    Varset('createdAt') * Varset('phLevel'),
                                 color: ColorEncode(
                                   variable: 'phLevel',
                                   values: [AppColors.blue, AppColors.blue],
                                 ),
                               ),
                               PointMark(
-                                position: Varset('createdAt') * Varset('phLevel'),
+                                position:
+                                    Varset('createdAt') * Varset('phLevel'),
                               ),
                             ],
                             axes: [
@@ -253,7 +255,7 @@ class _HomeViewState extends State<HomeView> {
                                 accessor: (Map datum) =>
                                     datum['tdsLevel'] as num,
                                 scale: LinearScale(
-                                  max: 1400,
+                                  max: 1500,
                                   min: 0,
                                   tickCount: 5,
                                   formatter: (v) => '${v.toInt()} ppm',
@@ -262,8 +264,8 @@ class _HomeViewState extends State<HomeView> {
                             },
                             marks: [
                               IntervalMark(
-                                position: Varset('createdAt') *
-                                    Varset('tdsLevel'),
+                                position:
+                                    Varset('createdAt') * Varset('tdsLevel'),
                                 color: ColorEncode(
                                   variable: 'tdsLevel',
                                   values: [AppColors.primary, AppColors.black],
