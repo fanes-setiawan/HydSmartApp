@@ -37,6 +37,7 @@ class _HomeViewState extends State<HomeView> {
         backgroundColor: AppColors.stroke,
         actions: [
           StreamBuilder<List<Map<String, dynamic>>>(
+            key: UniqueKey(),
             stream: DBHelper().getUnreadNotifications(),
             builder: (context, snapshot) {
               final unreadCount = snapshot.data?.length ?? 0; //
@@ -129,6 +130,7 @@ class _HomeViewState extends State<HomeView> {
                           width: MediaQuery.of(context).size.width,
                           height: 200,
                           child: Chart(
+                            key: UniqueKey(),
                             data: snapshot.data!,
                             variables: {
                               'createdAt': Variable(
@@ -244,6 +246,7 @@ class _HomeViewState extends State<HomeView> {
                           width: MediaQuery.of(context).size.width,
                           height: 200,
                           child: Chart(
+                            key: UniqueKey(),
                             data: nutrisiData,
                             variables: {
                               'createdAt': Variable(
