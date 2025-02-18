@@ -39,7 +39,7 @@ class CalibrationController extends ChangeNotifier {
           .collection('calibration')
           .doc('tds_sensor_admin')
           .update({
-        'status': 1,
+        'status': true,
         'fluid_ppm': int.parse(controllerText.text),
       });
     } catch (_) {

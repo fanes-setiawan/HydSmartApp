@@ -6,7 +6,6 @@ import 'package:hyd_smart_app/common/widgets/button_ex.dart';
 import 'package:hyd_smart_app/common/widgets/card_widget.dart';
 import 'package:hyd_smart_app/common/widgets/text_input_button.dart';
 import 'package:hyd_smart_app/common/widgets/text_switch_button.dart';
-import 'package:hyd_smart_app/presentations/remote/view/calibration_view.dart';
 import 'package:hyd_smart_app/presentations/remote/controller/remote_controller.dart';
 
 class RemoteView extends StatefulWidget {
@@ -161,7 +160,7 @@ class _RemoteViewState extends State<RemoteView> {
                                 ),
                                 child: Center(
                                   child: Text(
-                                    "${index + 1}x/Jam",
+                                    "${index + 1} menit 1x",
                                     style: const TextStyle(
                                       color: Colors.white,
                                       fontSize: 11.0,
@@ -197,7 +196,7 @@ class _RemoteViewState extends State<RemoteView> {
                       title: "Sensor TDS",
                       icon: Assets.icons.tds,
                       onTap: () {
-                        showCalibrationDialog(context , "tds");
+                        _controller.showConfirmDialog(context , "TDS" , 'tds');
                         print("Sensor TDS ditekan");
                       },
                     ),
@@ -205,8 +204,7 @@ class _RemoteViewState extends State<RemoteView> {
                       title: "Sensor PH",
                       icon: Assets.icons.ph,
                       onTap: () {
-                       showCalibrationDialog(context,'ph');
-                        print("Sensor PH ditekan");
+                        _controller.showConfirmDialog(context , "PH" , 'ph');
                       },
                     ),
                   ],
