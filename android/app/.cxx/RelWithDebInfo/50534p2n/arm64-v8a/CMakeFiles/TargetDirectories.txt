@@ -1,0 +1,2 @@
+/Users/macbookpro/Documents/Skripsi/hyd_smart_app/android/app/.cxx/RelWithDebInfo/50534p2n/arm64-v8a/CMakeFiles/rebuild_cache.dir
+/Users/macbookpro/Documents/Skripsi/hyd_smart_app/android/app/.cxx/RelWithDebInfo/50534p2n/arm64-v8a/CMakeFiles/edit_cache.dir

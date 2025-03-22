@@ -7,6 +7,7 @@ import 'package:hyd_smart_app/data/helper/db_helper.dart';
 import 'package:hyd_smart_app/core/assets/assets.gen.dart';
 import 'package:hyd_smart_app/common/message/firebase.dart';
 import 'package:hyd_smart_app/core/components/logging.dart';
+import 'package:hyd_smart_app/core/components/color_indicator.dart';
 import 'package:hyd_smart_app/presentations/home/view/notif_view.dart';
 import 'package:hyd_smart_app/presentations/home/view/schedule_view.dart';
 import 'package:hyd_smart_app/presentations/home/controller/home_controller.dart';
@@ -91,6 +92,27 @@ class _HomeViewState extends State<HomeView> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              StreamBuilder<double>(
+                stream: _controller.lastPhStream,
+                builder: (context, snapshot) {
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 10,
+                          height: 10,
+                          color: colorIndicator(ph: _controller.lastPh.toString()),
+                        ),
+                        const SizedBox(
+                          width: 10.0,
+                        ),
+                        Text("${_controller.lastPh} pH"),
+                      ],
+                    ),
+                  );
+                }
+              ),
               Container(
                 padding: const EdgeInsets.all(10.0),
                 decoration: BoxDecoration(
@@ -124,7 +146,6 @@ class _HomeViewState extends State<HomeView> {
                             ),
                           );
                         }
-
                         return Container(
                           margin: const EdgeInsets.only(top: 10),
                           width: MediaQuery.of(context).size.width,
@@ -199,6 +220,27 @@ class _HomeViewState extends State<HomeView> {
               const SizedBox(
                 height: 20.0,
               ),
+              StreamBuilder<double>(
+                stream: _controller.lastTdsStream,
+                builder: (context, snapshot) {
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 10,
+                          height: 10,
+                          color: colorIndicator(tds: _controller.lastTds.toString()),
+                        ),
+                        const SizedBox(
+                          width: 10.0,
+                        ),
+                        Text("${_controller.lastTds} ppm"),
+                      ],
+                    ),
+                  );
+                }
+              ),
               Container(
                 padding: const EdgeInsets.all(10.0),
                 decoration: BoxDecoration(
@@ -258,7 +300,7 @@ class _HomeViewState extends State<HomeView> {
                                 accessor: (Map datum) =>
                                     datum['tdsLevel'] as num,
                                 scale: LinearScale(
-                                  max: 1500,
+                                  max: nutrisiData[0]['tdsLevel']< 1000 ?1000 :1400,
                                   min: 0,
                                   tickCount: 5,
                                   formatter: (v) => '${v.toInt()} ppm',
@@ -271,9 +313,10 @@ class _HomeViewState extends State<HomeView> {
                                     Varset('createdAt') * Varset('tdsLevel'),
                                 color: ColorEncode(
                                   variable: 'tdsLevel',
-                                  values: [AppColors.primary, AppColors.black],
+                                  values: [AppColors.red, AppColors.primary , AppColors.black],
                                 ),
-                                size: SizeEncode(value: 10), // Lebar bar
+                                size: SizeEncode(value: 12),
+                                
                               ),
                             ],
                             axes: [

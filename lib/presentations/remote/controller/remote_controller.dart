@@ -92,6 +92,7 @@ class RemoteController {
     onSettingsChanged(automatic, waterPump, mixer, autoCheck);
   }
 
+
   Future<void> updateFirestoreField(String field, dynamic value) async {
     await _firestore.collection('remote').doc('OrNOJUjtHdOhIgvnP2Yq').update({
       field: value,

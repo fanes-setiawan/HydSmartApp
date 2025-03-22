@@ -6,6 +6,7 @@ import 'package:hyd_smart_app/common/widgets/button_ex.dart';
 import 'package:hyd_smart_app/common/widgets/card_widget.dart';
 import 'package:hyd_smart_app/common/widgets/text_input_button.dart';
 import 'package:hyd_smart_app/common/widgets/text_switch_button.dart';
+import 'package:hyd_smart_app/common/message/showTopSnackBarWithActions.dart';
 import 'package:hyd_smart_app/presentations/remote/controller/remote_controller.dart';
 
 class RemoteView extends StatefulWidget {
@@ -50,7 +51,18 @@ class _RemoteViewState extends State<RemoteView> {
               const SizedBox(
                 height: 55.0,
               ),
-              const CardWidget(),
+              GestureDetector(
+                  onLongPress: () {
+                    showTopSnackBarWithActions(
+                      context: context,
+                      title: 'Format!!!',
+                      message: 'apakah anda yakin ingin format kalibrasi?',
+                      textButton1: 'Cancel',
+                      textButton2: 'Format',
+                      tapButton2: () =>_controller.updateFirestoreField('isRemove', true),
+                    );
+                  },
+                  child: const CardWidget()),
               const SizedBox(height: 15.0),
               const Align(
                 alignment: Alignment.bottomLeft,
@@ -134,7 +146,7 @@ class _RemoteViewState extends State<RemoteView> {
                       controller: ScrollController(),
                       child: Row(
                         children: List.generate(
-                          5,
+                          30,
                           (index) {
                             bool selected = index ==
                                 (_autoCheck != 0 ? _autoCheck! - 1 : 0);
@@ -160,7 +172,7 @@ class _RemoteViewState extends State<RemoteView> {
                                 ),
                                 child: Center(
                                   child: Text(
-                                    "${index + 1} menit 1x",
+                                    "${index + 1} menit",
                                     style: const TextStyle(
                                       color: Colors.white,
                                       fontSize: 11.0,
@@ -196,7 +208,7 @@ class _RemoteViewState extends State<RemoteView> {
                       title: "Sensor TDS",
                       icon: Assets.icons.tds,
                       onTap: () {
-                        _controller.showConfirmDialog(context , "TDS" , 'tds');
+                        _controller.showConfirmDialog(context, "TDS", 'tds');
                         print("Sensor TDS ditekan");
                       },
                     ),
@@ -204,7 +216,7 @@ class _RemoteViewState extends State<RemoteView> {
                       title: "Sensor PH",
                       icon: Assets.icons.ph,
                       onTap: () {
-                        _controller.showConfirmDialog(context , "PH" , 'ph');
+                        _controller.showConfirmDialog(context, "PH", 'ph');
                       },
                     ),
                   ],
@@ -255,7 +267,7 @@ class _RemoteViewState extends State<RemoteView> {
                     ),
                     const Divider(height: 0.1, thickness: 0.5),
                     TextInputRow(
-                      title: 'Water',
+                      title: 'Water Filter',
                       subtitle: 'tambahkan air',
                       onChanged: (value) {
                         _controller.updateFirestoreField(

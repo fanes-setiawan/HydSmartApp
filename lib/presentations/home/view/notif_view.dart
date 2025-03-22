@@ -53,18 +53,18 @@ class _NotifViewState extends State<NotifView> {
         actions: [
           dataNotificationLength > 0
               ? CircleAvatar(
-                backgroundColor: AppColors.defauld,
-                child: IconButton(
+                  backgroundColor: AppColors.defauld,
+                  child: IconButton(
                     onPressed: () => _showDeleteConfirmDialog(),
-                    icon:  Icon(
+                    icon: Icon(
                       Icons.delete,
                       size: 24.0,
                       color: AppColors.red.withOpacity(0.8),
                     ),
                   ),
-              )
+                )
               : const SizedBox(),
-              const SizedBox(width: 10)
+          const SizedBox(width: 10)
         ],
       ),
       body: StreamBuilder<List<Map<String, dynamic>>>(
@@ -104,8 +104,8 @@ class _NotifViewState extends State<NotifView> {
       itemCount: notifications.length,
       itemBuilder: (context, index) {
         final notification = notifications[index];
-        final notificationDate = FormatTime.formatDate(
-            DateTime.parse(notification['timestamp']));
+        final notificationDate =
+            FormatTime.formatDate(DateTime.parse(notification['timestamp']));
         bool showDateHeader = lastDisplayedDate != notificationDate;
         if (showDateHeader) {
           lastDisplayedDate = notificationDate;
@@ -125,38 +125,55 @@ class _NotifViewState extends State<NotifView> {
                   ),
                 ),
               ),
-            ListTile(
-              selectedTileColor: notification['isRead'] == 0
-                  ? AppColors.blue.withOpacity(0.2)
-                  : AppColors.stroke,
-              selected: true,
-              leading: CircleAvatar(
-                backgroundColor: AppColors.primary,
-                child: Assets.logo.logoNbg.svg(),
-              ),
-              title: Row(
-                children: [
-                  Expanded(child: Text(notification['title'] ?? '')),
-                  Assets.icons.bell.svg(),
-                ],
-              ),
-              subtitle: Text(
-                notification['body'] ?? '',
-                style: const TextStyle(
-                  color: AppColors.gray,
-                  fontSize: 12,
-                ),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
-              trailing: Text(
-                FormatTime.FormatTimes(
-                  DateTime.parse(notification['timestamp']),
+            Dismissible(
+              key: Key(notification['id'].toString()),
+              direction: DismissDirection.endToStart,
+              background: Container(
+                color: AppColors.red,
+                alignment: Alignment.centerRight,
+                padding: const EdgeInsets.only(right: 16.0),
+                child: const Icon(
+                  Icons.delete,
+                  color: Colors.white,
                 ),
               ),
-              onTap: () {
-                DBHelper().markNotificationAsRead(notification['id']);
+              onDismissed: (direction) {
+                DBHelper().deleteNotification(notification['id']);
+                notifications.removeAt(index);
               },
+              child: ListTile(
+                selectedTileColor: notification['isRead'] == 0
+                    ? AppColors.blue.withOpacity(0.2)
+                    : AppColors.stroke,
+                selected: true,
+                leading: CircleAvatar(
+                  backgroundColor: AppColors.primary,
+                  child: Assets.logo.logoNbg.svg(),
+                ),
+                title: Row(
+                  children: [
+                    Expanded(child: Text(notification['title'] ?? '')),
+                    Assets.icons.bell.svg(),
+                  ],
+                ),
+                subtitle: Text(
+                  notification['body'] ?? '',
+                  style: const TextStyle(
+                    color: AppColors.gray,
+                    fontSize: 12,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                trailing: Text(
+                  FormatTime.FormatTimes(
+                    DateTime.parse(notification['timestamp']),
+                  ),
+                ),
+                onTap: () {
+                  DBHelper().markNotificationAsRead(notification['id']);
+                },
+              ),
             ),
           ],
         );
