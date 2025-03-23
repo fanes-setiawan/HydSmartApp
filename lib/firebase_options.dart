@@ -57,19 +57,20 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCBD0g2s5pAVGQ-Fue464ZgyHZRDtdioj4',
-    appId: '1:1025008658003:android:2e3f9995212b9c5c31c8a6',
-    messagingSenderId: '1025008658003',
-    projectId: 'hydsmartfire',
-    storageBucket: 'hydsmartfire.firebasestorage.app',
+    apiKey: 'AIzaSyC0Ilg2sQexL3NKPRLwDZqOXKiHR4W-Sfk',
+    appId: '1:859177258327:android:985402f4ede30b3a660212',
+    messagingSenderId: '859177258327',
+    projectId: 'back-up-hydroponic',
+    storageBucket: 'back-up-hydroponic.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyBJKf_OTvHhYJQNKTQxO0ibwwsovDsCK9k',
-    appId: '1:1025008658003:ios:e90db4d46740612631c8a6',
-    messagingSenderId: '1025008658003',
-    projectId: 'hydsmartfire',
-    storageBucket: 'hydsmartfire.firebasestorage.app',
+    apiKey: 'AIzaSyBB_oAhdppNmQpGjpicZvqhFciQc3XvC7c',
+    appId: '1:859177258327:ios:2fa1769cedc6d090660212',
+    messagingSenderId: '859177258327',
+    projectId: 'back-up-hydroponic',
+    storageBucket: 'back-up-hydroponic.firebasestorage.app',
     iosBundleId: 'com.example.hydSmartApp',
   );
+
 }
